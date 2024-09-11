@@ -1,0 +1,7 @@
+#+TITLE: Esercizi di elixir
+#+AUTHOR: Luca Zaninotto
+#+DATE: 11 set 2024
+* Struct
+  Ogni cartella è un progetto =mix=, di seguito alcune:
+  - [[file:server_process/][server_process]] :: implementa il modulo =ServerProcess= del libro
+    /Elixir in Action/
