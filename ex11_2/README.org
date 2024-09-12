@@ -1,0 +1,43 @@
+#+TITLE: Exercise 11 part 2
+#+AUTHOR: Luca Zaninotto
+#+DATE: 12 Sep 2024
+* Basics
+  Start the server with
+  #+BEGIN_SRC elixir
+    pid = Ecounter.start()
+  #+END_SRC
+
+  Send the event name to increment its counter, or start it (setting
+  it to 0) if it was never recorded
+
+  #+BEGIN_SRC elixir
+    pid = Ecounter.start()
+
+    send(pid, {:event, "Event one"}) # Event one now at 0
+
+    send(pid, {:event, "Event one"}) # Event one now at 1
+  #+END_SRC
+
+  Get the event counter with ={:fetch, where_to_send, event}=
+
+  #+BEGIN_SRC elixir
+    pid = Ecounter.start()
+    event_name = "Event one"
+
+    send(pid, {:event, event_name}) # 0
+    send(pid, {:event, event_name}) # 1
+
+    send(pid, {:fetch, self(), event_name})
+
+    receive do
+      {:events_count, {:error, :event_not_found}} -> IO.puts("Error while retrieving event #{event_name}")
+      {:events_count, n} -> IO.puts("Event #{event_name} counter at #{n}")
+    end
+  #+END_SRC
+
+* Test
+  Tests are included in the [[file:test/][test]] folder. You can run them with
+  
+  #+BEGIN_SRC sh
+    mix test
+  #+END_SRC

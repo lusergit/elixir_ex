@@ -9,14 +9,14 @@ defmodule Ecounter do
         loop(Map.update(map, event, 0, fn val -> val + 1 end))
 
       {:fetch, pid, event} ->
-        send(
-          pid,
-          {:events_count,
-           case Map.fetch(map, event) do
-             :error -> {:error, :event_not_found}
-             v -> v
-           end}
-        )
+        result =
+          case Map.fetch(map, event) do
+            :error -> {:error, :event_not_found}
+            v -> v
+          end
+
+        response = {:events_count, result}
+        send(pid, response)
     end
 
     loop(map)
