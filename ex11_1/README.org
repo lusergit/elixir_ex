@@ -1,0 +1,39 @@
+#+TITLE: Exercise 11 part 1
+#+AUTHOR: Luca Zaninotto
+#+DATE: 12 Sep 2024
+* Basics
+  Start the server with
+  #+BEGIN_SRC elixir
+    pid = Minis.start()
+  #+END_SRC
+
+  Sending =:inc= increments the counter, while =:dec= decrements it:
+
+  #+BEGIN_SRC elixir
+    pid = Minis.start()		# Counter = 0
+    send(pid, :inc)			# Counter = 1
+    send(pid, :dec)			# Counter = 0
+  #+END_SRC
+
+  =:get= to get back the current value
+
+  #+BEGIN_SRC elixir
+    pid = Minis.start()
+
+    send(pid, :inc)
+    send(pid, {:get, self()})	# send the current counter to `self()`
+    
+    res = receive do
+      {:ok, counter} -> counter = 1
+      _ -> :error
+    end
+
+    # res should be `true`
+  #+END_SRC
+
+* Test
+  Three tests are included in the [[file:test/][test]] folder. You can run them with
+  
+  #+BEGIN_SRC sh
+    mix test
+  #+END_SRC
