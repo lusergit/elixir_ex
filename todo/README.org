@@ -49,3 +49,10 @@
    Since the state is persisted trough the ~Todo.Database~ module (in
    particular trough its ~Todo.DatabaseWorker~), restarting the
    application keeps the todos for each list identified by its name.
+** Simplified ~TODO~ module
+   the ~Todo~ module exposes a simpler API, consisting of
+   - ~.get_list(name)~ :: to get a specific list given a name
+   - ~.add_entry(list, date, todo)~ :: to add a todo entry on a date
+     on a specific list
+   - ~.get_entries(list, date)~ :: to get all the entries of a list on
+     a specific date
