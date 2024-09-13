@@ -108,7 +108,6 @@ defmodule Excode do
 
   def zipsort([], l), do: l
   def zipsort(l, []), do: l
-  def zipsort([h1 | t1], [h1 | t2]), do: [h1, h1] ++ zipsort(t1, t2)
-  def zipsort([h1 | t1], [h2 | t2]) when h1 < h2, do: [h1, h2] ++ zipsort(t1, t2)
-  def zipsort([h1 | t1], [h2 | t2]), do: [h2, h1] ++ zipsort(t1, t2)
+  def zipsort([h1 | t1], [h2 | t2]) when h1 < h2, do: [h1 | zipsort(t1, [h2 | t2])]
+  def zipsort([h1 | t1], [h2 | t2]), do: [h2 | zipsort([h1 | t1], t2)]
 end
