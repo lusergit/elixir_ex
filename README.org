@@ -2,9 +2,11 @@
 #+AUTHOR: Luca Zaninotto
 #+DATE: 11 set 2024
 * Struct
-  Ogni cartella è un progetto =mix=, di seguito alcune:
+  Ogni cartella è un progetto =mix=.
   - [[file:ex8/][ex8]] :: a collezione di funzioni dell'esercizio 8
   - [[file:ex11_1/][ex11_1]] :: Counter implementato come server
   - [[file:ex11_2/][ex11_2]] :: Event counter
   - [[file:server_process/][server_process]] :: implementa il modulo =ServerProcess= del libro
     /Elixir in Action/
+  - [[file:todo/][todo]] :: Implementa l'applicazione =Todo= del libro /Elixir in
+    Action/
