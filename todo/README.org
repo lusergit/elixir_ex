@@ -1,0 +1,51 @@
+#+TITLE: Simple Todo App
+#+AUTHOR: Luca Zaninotto
+#+DATE: 13 Sep 2024
+* Architecture
+  The application orchestrates it execution trought the ~Application~
+  module by elixir. When starting its initializes the high level
+  supervisor of the ~Todo.Database~ module and ~Todo.Cache~ module.
+
+  - ~Todo.Cache~ :: Is responsible for handling ~Todo.Server~
+    instances. The raionale is one server per list.
+  - ~Todo.Server~ :: Is responsible for reading/writing =Todo=
+    lists. It exposes two main methods:
+    + ~Todo.Server.add_entry(server, entry)~ :: given a server pid
+      adds a new entry in the shape ~{date, todo}~ to the todo
+      list. In background it interfaces with the ~Todo.Database~
+      module to write it to memory and retrieve everything once
+      starting the application
+    + ~Todo.Server.entries(server, date)~ :: gets all the todos
+      available for the given date.
+* Orchestration
+** In =iex=
+   Start the project with
+   #+BEGIN_SRC sh
+     iex -S mix
+   #+END_SRC
+   In this case the Application is automatically started, you can see
+   that with
+   #+BEGIN_SRC elixir
+     Application.started_applications()
+   #+END_SRC
+   and you should see the entry ~{:todo, ~c"todo", ~c"0.1.0"}~. From
+   there you can get the a list server with
+   #+BEGIN_SRC elixir
+     name = "bob"			# The name of the list
+     bob = Todo.Cache.server_process(name)
+   #+END_SRC
+   With the server you can write on the list
+   #+BEGIN_SRC elixir
+     entry = {~D[2024-09-15], "Dentist"}
+     Todo.Server.add_entry(bob, entry)
+     # :ok
+   #+END_SRC
+   and read from it
+   #+BEGIN_SRC elixir
+     Todo.Server.entries(bob, ~D[2024-09-15])
+     # ["Dentist"]
+   #+END_SRC
+
+   Since the state is persisted trough the ~Todo.Database~ module (in
+   particular trough its ~Todo.DatabaseWorker~), restarting the
+   application keeps the todos for each list identified by its name.
